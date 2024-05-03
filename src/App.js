@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
 import './App.css';
 
 function App() {
@@ -8,6 +10,7 @@ function App() {
   const [editId,setEditId] = useState(0);
 
   const handleSumbit = (e) =>{
+
     e.preventDefault();
 
     if(editId){
@@ -17,6 +20,8 @@ function App() {
       ? (e={id:e.id ,todo})
       : {id:e.id, todo : e.todo}
     );
+
+
     setTodos(updatedTodos);
     setEditId(0);
     setTodo("");
@@ -40,39 +45,33 @@ function App() {
     const editTodo = todos.find((e) => e.id === id);
     setTodo(editTodo.todo);
     setEditId(id);
-
   };
+
   return (
     <div className="App">
+
       <div className='container'>
-      <h1>
-        Todo List
-      </h1>
+        <h1>
+          Todo List
+        </h1>
 
-      <form className='todoForm' onSubmit={handleSumbit}>
-    <input 
-      type="text"
-      placeholder='Add task' 
-      value={todo}
-      onChange={(e) => setTodo(e.target.value)}
-    />
-    <button  style={{color :"blue" }} type='submit'>{editId ?  "Edit" : "Add"} </button>
-  </form>
+        <TodoForm 
+          handleSumbit ={handleSumbit}
+          todo = {todo}
+          setTodo ={setTodo}
+          editId = {editId}
+        />
 
-  <ul  className='todolists'>
-    {
-      todos.map((t) => (
-        <li className='todolist'>
-          <span className='lists' key={t.id}>{t.todo}</span>
-          <button  style={{color :"green" }}  onClick={(id) => handleEdit(t.id)}>Edit</button>
-          <button style={{color :"red" }}   onClick={(id) => handleDelete(t.id)}>Delete</button>
-        </li>
-      ))
-    }
-    </ul>
+        <TodoList
+          todos = {todos}
+          handleEdit = {handleEdit}
+          handleDelete = {handleDelete}
+        />
+
       </div>
 
     </div>
+
   );
 }
 
